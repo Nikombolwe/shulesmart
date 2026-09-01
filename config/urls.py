@@ -16,4 +16,5 @@ urlpatterns = [
     # REST API Endpoints za Modules
     path('api/academics/', include('academics.urls')),
     path('api/students/', include('students.urls')),
+    path('api/finance/', include('finance.urls')),  # <--- Module ya Ada na Malipo
 ]
