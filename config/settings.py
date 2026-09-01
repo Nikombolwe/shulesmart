@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'academics',
     'students',
     'finance',
+    'exams',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.DjangoTemplates',
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',  # <--- Hapa ndipo palikuwa na hitilafu kidogo
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
