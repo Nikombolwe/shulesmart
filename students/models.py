@@ -1,7 +1,9 @@
 import uuid
 from django.db import models
+from django.conf import settings
 from core.models import School, User
-from academics.models import GradeLevel, Stream
+from academics.models import AcademicYear, GradeLevel, Stream
+
 
 class ParentGuardian(models.Model):
     """
@@ -64,3 +66,51 @@ class Student(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.admission_number})"
+
+
+class Enrollment(models.Model):
+    """
+    Kusajili Mwanafunzi Darasani kwa Mwaka wa Masomo.
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='enrollments')
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='enrollments')
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE, related_name='enrollments')
+    grade_level = models.ForeignKey(GradeLevel, on_delete=models.CASCADE, related_name='enrollments')
+    stream = models.ForeignKey(Stream, on_delete=models.SET_NULL, null=True, blank=True, related_name='enrollments')
+    is_active = models.BooleanField(default=True)
+    enrolled_at = models.DateField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('student', 'academic_year')
+        ordering = ['-enrolled_at']
+
+    def __str__(self):
+        return f"{self.student} - {self.grade_level} ({self.academic_year})"
+
+
+class Attendance(models.Model):
+    """
+    Mahudhurio ya Kila Siku ya Mwanafunzi.
+    """
+    class Status(models.TextChoices):
+        PRESENT = 'PRESENT', 'Present'
+        ABSENT = 'ABSENT', 'Absent'
+        LATE = 'LATE', 'Late'
+        EXCUSED = 'EXCUSED', 'Excused'
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='attendances')
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='attendances')
+    date = models.DateField()
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PRESENT)
+    remarks = models.CharField(max_length=255, blank=True, null=True)
+    recorded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='recorded_attendances')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('student', 'date')
+        ordering = ['-date']
+
+    def __str__(self):
+        return f"{self.student} - {self.date} ({self.status})"
