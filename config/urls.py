@@ -6,6 +6,9 @@ from core.views import CustomTokenObtainPairView
 urlpatterns = [
     path('admin/', admin.site.urls),
     
+    # Session Auth kwa ajili ya Django REST Browsable API kwenye Browser
+    path('api-auth/', include('rest_framework.urls')),
+
     # Custom JWT Auth Endpoints (Inarudisha Token + User Role & School Data)
     path('api/auth/login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
