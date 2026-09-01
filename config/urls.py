@@ -23,9 +23,11 @@ urlpatterns = [
     path('api/students/', include('students.urls')),
     path('api/finance/', include('finance.urls')),
     path('api/exams/', include('exams.urls')),  # <--- Moduli ya Mitihani na Alama
+    path('api/communication/', include('communication.urls')),  # <--- Moduli ya Mawasiliano
 
     # API Documentation Endpoints (drf-spectacular)
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    
 ]
