@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import CustomTokenObtainPairSerializer
 
-# Create your views here.
+class CustomTokenObtainPairView(TokenObtainPairView):
+    """
+    Custom Login Endpoint inayotumia Custom Serializer yetu.
+    """
+    serializer_class = CustomTokenObtainPairSerializer
