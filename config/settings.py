@@ -36,12 +36,13 @@ INSTALLED_APPS = [
     # Third-party apps
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_spectacular',  # <--- OpenAPI 3 Schema & Swagger Generator
 
     # Internal apps
     'core',
     'academics',
     'students',
-    'finance'
+    'finance',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND': 'django.template.backends.DjangoTemplates',
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -135,6 +136,15 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # Engine ya Kutengeneza Swagger Docs
+}
+
+# Swagger UI Metadata Configuration
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'ShuleSmart API',
+    'DESCRIPTION': 'Mfumo wa Usimamizi wa Shule za Sekondari na Msingi (Multi-Tenant SaaS)',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 SIMPLE_JWT = {
